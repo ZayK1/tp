@@ -37,14 +37,24 @@ public class EditCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
-        Person editedPerson = new PersonBuilder().withStudentId("A9999999Z").withModuleCode("CS9999").build();
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson).build();
+        Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person descriptorPerson = new PersonBuilder().withStudentId("A9999999Z").withModuleCode("CS9999").build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(descriptorPerson).build();
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, descriptor);
+
+        PersonBuilder personInList = new PersonBuilder(personToEdit);
+        Person editedPerson = personInList
+                .withName(descriptorPerson.getName().fullName)
+                .withEmail(descriptorPerson.getEmail().value)
+                .withStudentId(descriptorPerson.getStudentId().value)
+                .withModuleCodes("CS9999")
+                .withTags() // descriptor from PersonBuilder has empty tags
+                .build();
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
+        expectedModel.setPerson(personToEdit, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }

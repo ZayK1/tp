@@ -1,7 +1,6 @@
 package seedu.address.model.person;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,9 +10,9 @@ import seedu.address.testutil.PersonBuilder;
 public class PersonStudentFieldsTest {
 
     @Test
-    public void constructor_withoutStudentFields_setsNulls() {
+    public void constructor_defaultBuilder_createsDefaultStudent() {
         Person person = new PersonBuilder().build();
-        assertNull(person.getStudentId());
+        assertEquals(new StudentId(PersonBuilder.DEFAULT_STUDENT_ID), person.getStudentId());
         assertEquals(0, person.getModuleCodes().size());
     }
 
@@ -31,5 +30,4 @@ public class PersonStudentFieldsTest {
         assertEquals(new ModuleCode(mod), person.getModuleCodes().iterator().next());
     }
 }
-
 

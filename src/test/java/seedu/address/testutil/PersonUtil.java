@@ -33,14 +33,10 @@ public class PersonUtil {
     public static String getPersonDetails(Person person) {
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX_NAME + person.getName().fullName + " ");
-        sb.append(PREFIX_PHONE + person.getPhone().value + " ");
+        sb.append(PREFIX_STUDENT_ID + person.getStudentId().value + " ");
         sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
-        sb.append(PREFIX_ADDRESS + person.getAddress().value + " ");
-        if (person.getStudentId() != null) {
-            sb.append(PREFIX_STUDENT_ID + person.getStudentId().value + " ");
-        }
-        person.getModuleCodes().forEach(
-            mc -> sb.append(PREFIX_MODULE_CODE + mc.value + " ")
+        person.getModuleCodes().stream().forEach(
+            s -> sb.append(PREFIX_MODULE_CODE + s.value + " ")
         );
         person.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")

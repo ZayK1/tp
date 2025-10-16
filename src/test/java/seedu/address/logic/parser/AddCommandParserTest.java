@@ -8,6 +8,7 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_MODULE_CODE_D
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_STUDENT_ID_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.MODULE_CODE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.MODULE_CODE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
@@ -18,6 +19,7 @@ import static seedu.address.logic.commands.CommandTestUtil.STUDENT_ID_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_MODULE_CODE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_MODULE_CODE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_STUDENT_ID_BOB;
@@ -28,7 +30,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT_ID;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-import static seedu.address.testutil.TypicalPersons.BOB;
 
 import org.junit.jupiter.api.Test;
 
@@ -64,6 +65,15 @@ public class AddCommandParserTest {
                 NAME_DESC_BOB + STUDENT_ID_DESC_BOB + EMAIL_DESC_BOB + MODULE_CODE_DESC_BOB
                         + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 new AddCommand(expectedPersonMultipleTags));
+
+        // multiple module codes - all accepted
+        Person expectedPersonMultipleModuleCodes = new PersonBuilder().withName(VALID_NAME_BOB)
+                .withStudentId(VALID_STUDENT_ID_BOB).withEmail(VALID_EMAIL_BOB)
+                .withModuleCodes(VALID_MODULE_CODE_BOB, VALID_MODULE_CODE_AMY).withTags(VALID_TAG_FRIEND).build();
+        assertParseSuccess(parser,
+                NAME_DESC_BOB + STUDENT_ID_DESC_BOB + EMAIL_DESC_BOB + MODULE_CODE_DESC_BOB
+                        + MODULE_CODE_DESC_AMY + TAG_DESC_FRIEND,
+                new AddCommand(expectedPersonMultipleModuleCodes));
     }
 
     @Test
@@ -75,7 +85,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, NAME_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME));
 
-        // multiple phones
+        // multiple student ids
         assertParseFailure(parser, STUDENT_ID_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_STUDENT_ID));
 
@@ -99,7 +109,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, INVALID_EMAIL_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_EMAIL));
 
-        // invalid phone
+        // invalid student id
         assertParseFailure(parser, INVALID_STUDENT_ID_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_STUDENT_ID));
 
@@ -113,7 +123,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, validExpectedPersonString + INVALID_EMAIL_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_EMAIL));
 
-        // invalid phone
+        // invalid student id
         assertParseFailure(parser, validExpectedPersonString + INVALID_STUDENT_ID_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_STUDENT_ID));
     }
@@ -121,7 +131,8 @@ public class AddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Person expectedPerson = new PersonBuilder(BOB).withTags().build();
+        Person expectedPerson = new PersonBuilder().withName(VALID_NAME_BOB).withStudentId(VALID_STUDENT_ID_BOB)
+                .withEmail(VALID_EMAIL_BOB).withModuleCodes(VALID_MODULE_CODE_BOB).withTags().build();
         assertParseSuccess(parser, NAME_DESC_BOB + STUDENT_ID_DESC_BOB + EMAIL_DESC_BOB
                 + MODULE_CODE_DESC_BOB, new AddCommand(expectedPerson));
     }
@@ -134,7 +145,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, VALID_NAME_BOB + STUDENT_ID_DESC_BOB + EMAIL_DESC_BOB + MODULE_CODE_DESC_BOB,
                 expectedMessage);
 
-        // missing phone prefix
+        // missing student id prefix
         assertParseFailure(parser, NAME_DESC_BOB + VALID_STUDENT_ID_BOB + EMAIL_DESC_BOB + MODULE_CODE_DESC_BOB,
                 expectedMessage);
 
@@ -142,7 +153,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, NAME_DESC_BOB + STUDENT_ID_DESC_BOB + VALID_EMAIL_BOB + MODULE_CODE_DESC_BOB,
                 expectedMessage);
 
-        // missing address prefix
+        // missing module code prefix
         assertParseFailure(parser, NAME_DESC_BOB + STUDENT_ID_DESC_BOB + EMAIL_DESC_BOB + VALID_MODULE_CODE_BOB,
                 expectedMessage);
 
@@ -157,7 +168,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, INVALID_NAME_DESC + STUDENT_ID_DESC_BOB + EMAIL_DESC_BOB
                 + MODULE_CODE_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Name.MESSAGE_CONSTRAINTS);
 
-        // invalid phone
+        // invalid student id
         assertParseFailure(parser, NAME_DESC_BOB + INVALID_STUDENT_ID_DESC + EMAIL_DESC_BOB
                 + MODULE_CODE_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, StudentId.MESSAGE_CONSTRAINTS);
 
@@ -165,7 +176,7 @@ public class AddCommandParserTest {
         assertParseFailure(parser, NAME_DESC_BOB + STUDENT_ID_DESC_BOB + INVALID_EMAIL_DESC
                 + MODULE_CODE_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Email.MESSAGE_CONSTRAINTS);
 
-        // invalid address
+        // invalid module code
         assertParseFailure(parser, NAME_DESC_BOB + STUDENT_ID_DESC_BOB + EMAIL_DESC_BOB
                 + INVALID_MODULE_CODE_DESC + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, ModuleCode.MESSAGE_CONSTRAINTS);
 
@@ -183,4 +194,5 @@ public class AddCommandParserTest {
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 }
+
 
