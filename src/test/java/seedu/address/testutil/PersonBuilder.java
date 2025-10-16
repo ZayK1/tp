@@ -19,10 +19,8 @@ import seedu.address.model.util.SampleDataUtil;
 public class PersonBuilder {
 
     public static final String DEFAULT_NAME = "Amy Bee";
-    public static final String DEFAULT_PHONE = "85355255";
-    public static final String DEFAULT_EMAIL = "amy@gmail.com";
-    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
-    public static final String DEFAULT_STUDENT_ID = "A0000000X";
+    public static final String DEFAULT_STUDENT_ID = "A1234567X";
+    public static final String DEFAULT_EMAIL = "amy@u.nus.edu";
 
     private Name name;
     private Phone phone;
@@ -33,16 +31,16 @@ public class PersonBuilder {
     private Set<ModuleCode> moduleCodes;
 
     /**
-     * Creates a {@code PersonBuilder} with the default details.
+     * Creates a {@code PersonBuilder} with the default details for a student.
      */
     public PersonBuilder() {
         name = new Name(DEFAULT_NAME);
-        phone = new Phone(DEFAULT_PHONE);
+        studentId = new StudentId(DEFAULT_STUDENT_ID);
         email = new Email(DEFAULT_EMAIL);
-        address = new Address(DEFAULT_ADDRESS);
-        tags = new HashSet<>();
-        studentId = null;
         moduleCodes = new HashSet<>();
+        tags = new HashSet<>();
+        phone = null;
+        address = null;
     }
 
     /**
@@ -53,9 +51,9 @@ public class PersonBuilder {
         phone = personToCopy.getPhone();
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
-        tags = new HashSet<>(personToCopy.getTags());
         studentId = personToCopy.getStudentId();
         moduleCodes = new HashSet<>(personToCopy.getModuleCodes());
+        tags = new HashSet<>(personToCopy.getTags());
     }
 
     /**
@@ -69,13 +67,14 @@ public class PersonBuilder {
     /**
      * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Person} that we are building.
      */
-    public PersonBuilder withTags(String ... tags) {
+    public PersonBuilder withTags(String... tags) {
         this.tags = SampleDataUtil.getTagSet(tags);
         return this;
     }
 
     /**
      * Sets the {@code Address} of the {@code Person} that we are building.
+     * Note: This is for building non-student Persons.
      */
     public PersonBuilder withAddress(String address) {
         this.address = new Address(address);
@@ -84,6 +83,7 @@ public class PersonBuilder {
 
     /**
      * Sets the {@code Phone} of the {@code Person} that we are building.
+     * Note: This is for building non-student Persons.
      */
     public PersonBuilder withPhone(String phone) {
         this.phone = new Phone(phone);
@@ -115,7 +115,7 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the {@code ModuleCodes} of the {@code Person} that we are building.
+     * Parses the {@code moduleCodes}.
      */
     public PersonBuilder withModuleCodes(String... moduleCodes) {
         this.moduleCodes = SampleDataUtil.getModuleCodeSet(moduleCodes);
@@ -141,14 +141,18 @@ public class PersonBuilder {
     }
 
     /**
-     * Builds a {@code Person} from the current builder state.
-     * If both student-related fields are unset, the constructor without those fields is used.
+     * Builds a Person object.
+     * If phone and address are null (default for this builder), builds a student Person.
+     * Otherwise, uses the constructor for a generic Person.
      */
     public Person build() {
-        if (studentId == null && moduleCodes.isEmpty()) {
-            return new Person(name, phone, email, address, tags);
+        if (this.phone == null && this.address == null) {
+            // Build a student
+            return new Person(name, studentId, email, moduleCodes, tags);
+        } else {
+            // Build a generic person (for other tests)
+            return new Person(name, phone, email, address, tags, studentId,
+                    moduleCodes);
         }
-        return new Person(name, phone, email, address, tags, studentId, moduleCodes);
     }
-
 }

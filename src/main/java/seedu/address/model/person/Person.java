@@ -19,12 +19,12 @@ public class Person {
 
     // Identity fields
     private final Name name;
-    private final Phone phone;
+    private Phone phone;
     private final Email email;
     private final StudentId studentId;
     private final Set<ModuleCode> moduleCodes = new HashSet<>();
     // Data fields
-    private final Address address;
+    private Address address;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
@@ -55,6 +55,20 @@ public class Person {
         this.address = address;
         this.tags.addAll(tags);
         this.studentId = null;
+    }
+
+    /**
+     * Constructor for Student (with StudentId and ModuleCodes, no phone/address)
+     */
+    public Person(Name name, StudentId studentId, Email email, Set<ModuleCode> moduleCodes, Set<Tag> tags) {
+        requireAllNonNull(name, studentId, email, moduleCodes, tags);
+        this.name = name;
+        this.studentId = studentId;
+        this.email = email;
+        this.phone = null;
+        this.address = null;
+        this.moduleCodes.addAll(moduleCodes);
+        this.tags.addAll(tags);
     }
 
     public Name getName() {
@@ -123,9 +137,9 @@ public class Person {
 
         Person otherPerson = (Person) other;
         return name.equals(otherPerson.name)
-                && phone.equals(otherPerson.phone)
+                && Objects.equals(phone, otherPerson.phone)
                 && email.equals(otherPerson.email)
-                && address.equals(otherPerson.address)
+                && Objects.equals(address, otherPerson.address)
                 && tags.equals(otherPerson.tags)
                 && Objects.equals(studentId, otherPerson.studentId)
                 && moduleCodes.equals(otherPerson.moduleCodes);

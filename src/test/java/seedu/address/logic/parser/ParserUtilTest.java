@@ -38,7 +38,8 @@ public class ParserUtilTest {
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
     private static final String VALID_STUDENT_ID = "A0123456X";
-    private static final String VALID_MODULE_CODE = "CS2103T";
+    private static final String VALID_MODULE_CODE_1 = "CS2103T";
+    private static final String VALID_MODULE_CODE_2 = "CS2101";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -49,8 +50,8 @@ public class ParserUtilTest {
 
     @Test
     public void parseIndex_outOfRangeInput_throwsParseException() {
-        assertThrows(ParseException.class, MESSAGE_INVALID_INDEX, ()
-            -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
+        assertThrows(ParseException.class, MESSAGE_INVALID_INDEX, (
+                ) -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
     }
 
     @Test
@@ -110,7 +111,7 @@ public class ParserUtilTest {
 
     @Test
     public void parseAddress_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress((String) null));
+        assertThrows(ParseException.class, () -> ParserUtil.parseAddress((String) null));
     }
 
     @Test
@@ -235,14 +236,40 @@ public class ParserUtilTest {
 
     @Test
     public void parseModuleCode_validValueWithoutWhitespace_returnsModuleCode() throws Exception {
-        ModuleCode expectedModuleCode = new ModuleCode(VALID_MODULE_CODE);
-        assertEquals(expectedModuleCode, ParserUtil.parseModuleCode(VALID_MODULE_CODE));
+        ModuleCode expectedModuleCode = new ModuleCode(VALID_MODULE_CODE_1);
+        assertEquals(expectedModuleCode, ParserUtil.parseModuleCode(VALID_MODULE_CODE_1));
     }
 
     @Test
     public void parseModuleCode_validValueWithWhitespace_returnsTrimmedModuleCode() throws Exception {
-        String moduleCodeWithWhitespace = WHITESPACE + VALID_MODULE_CODE + WHITESPACE;
-        ModuleCode expectedModuleCode = new ModuleCode(VALID_MODULE_CODE);
+        String moduleCodeWithWhitespace = WHITESPACE + VALID_MODULE_CODE_1 + WHITESPACE;
+        ModuleCode expectedModuleCode = new ModuleCode(VALID_MODULE_CODE_1);
         assertEquals(expectedModuleCode, ParserUtil.parseModuleCode(moduleCodeWithWhitespace));
+    }
+
+    @Test
+    public void parseModuleCodes_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseModuleCodes(null));
+    }
+
+    @Test
+    public void parseModuleCodes_collectionWithInvalidModuleCodes_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseModuleCodes(Arrays.asList(VALID_MODULE_CODE_1,
+                INVALID_MODULE_CODE)));
+    }
+
+    @Test
+    public void parseModuleCodes_emptyCollection_returnsEmptySet() throws Exception {
+        assertTrue(ParserUtil.parseModuleCodes(Collections.emptyList()).isEmpty());
+    }
+
+    @Test
+    public void parseModuleCodes_collectionWithValidModuleCodes_returnsModuleCodeSet() throws Exception {
+        Set<ModuleCode> actualTagSet = ParserUtil.parseModuleCodes(Arrays.asList(VALID_MODULE_CODE_1,
+                VALID_MODULE_CODE_2));
+        Set<ModuleCode> expectedTagSet = new HashSet<>(Arrays.asList(new ModuleCode(VALID_MODULE_CODE_1),
+                new ModuleCode(VALID_MODULE_CODE_2)));
+
+        assertEquals(expectedTagSet, actualTagSet);
     }
 }
