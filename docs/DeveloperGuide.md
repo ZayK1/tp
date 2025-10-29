@@ -82,6 +82,17 @@ The `UI` component,
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
 
+#### ResultDisplay HTML Rendering
+
+The `ResultDisplay` component uses JavaFX `WebView` to render command feedback with rich HTML/CSS formatting:
+
+* **Theme Support**: Automatically switches between dark and light themes via `setTheme(boolean)` method, called by `MainWindow` during theme toggle.
+* **Message Formatting**: Converts plain text messages to styled HTML with syntax highlighting for student IDs, module codes, numbers, and tags.
+* **Visual Design**: Uses iOS-inspired color scheme with gradient headers, rounded borders, and monospace fonts for code elements.
+* **Compliance**: Maintains CLI-first approach - WebView is output-only with context menu disabled. All user input remains keyboard-driven through `CommandBox`.
+
+**Note**: The HTML/CSS generation methods in `ResultDisplay` have lower test coverage as they contain presentation logic that is better validated through manual UI testing.
+
 ### Logic component
 
 **API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
