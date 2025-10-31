@@ -377,43 +377,46 @@
 }
 
 .result-display {
-    -fx-background-color: rgba(28, 28, 30, 0.8);
-    -fx-background-radius: 16px;
-    -fx-font-family: -apple-system, "SF Mono", "Consolas", monospace;
-    -fx-font-size: 13pt;
-    -fx-text-fill: #ffffff;
-    -fx-padding: 24px 28px;
-    -fx-border-color: rgba(255, 255, 255, 0.18);
-    -fx-border-width: 1px;
-    -fx-border-radius: 16px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 15, 0, 0, 4);
-    -fx-text-alignment: top;
-    -fx-wrap-text: true;
-    -fx-control-inner-background: rgba(28, 28, 30, 0.8);
+    -fx-background-color: rgba(28, 28, 30, 0.6);
+    -fx-padding: 16px;
 }
 
-.result-display:focused {
-    -fx-text-fill: #ffffff;
+.result-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
 }
 
-.result-display .label {
-    -fx-text-fill: #ffffff !important;
-}
-
-.result-display .content {
+.result-scroll-pane .viewport {
     -fx-background-color: transparent;
 }
 
-.result-display .scroll-pane {
+.result-scroll-pane .content {
     -fx-background-color: transparent;
 }
 
-.result-display .scroll-pane .viewport {
+.result-scroll-pane .scroll-bar:vertical {
     -fx-background-color: transparent;
 }
 
-.result-display .scroll-pane .content {
+.result-scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-background-radius: 4px;
+}
+
+.result-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 4px;
+}
+
+.result-scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+}
+
+.result-scroll-pane .scroll-bar:vertical .increment-button,
+.result-scroll-pane .scroll-bar:vertical .decrement-button {
     -fx-background-color: transparent;
+    -fx-padding: 0;
 }
 
 /* ==================== TAGS - iOS PILL BADGES ==================== */

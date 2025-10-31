@@ -379,36 +379,46 @@
 }
 
 .result-display {
-    -fx-background-color: rgba(255, 255, 255, 0.95);
-    -fx-background-radius: 16px;
-    -fx-font-family: -apple-system, "SF Mono", "Consolas", monospace;
-    -fx-font-size: 13pt;
-    -fx-text-fill: #1d1d1f;
-    -fx-padding: 20px;
-    -fx-border-color: rgba(0, 0, 0, 0.1);
-    -fx-border-width: 1px;
-    -fx-border-radius: 16px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 15, 0, 0, 4);
+    -fx-background-color: rgba(245, 245, 247, 0.8);
+    -fx-padding: 16px;
 }
 
-.result-display .label {
-    -fx-text-fill: #1d1d1f !important;
+.result-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
 }
 
-.result-display .content {
+.result-scroll-pane .viewport {
     -fx-background-color: transparent;
 }
 
-.result-display .scroll-pane {
+.result-scroll-pane .content {
     -fx-background-color: transparent;
 }
 
-.result-display .scroll-pane .viewport {
+.result-scroll-pane .scroll-bar:vertical {
     -fx-background-color: transparent;
 }
 
-.result-display .scroll-pane .content {
+.result-scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: rgba(0, 0, 0, 0.05);
+    -fx-background-radius: 4px;
+}
+
+.result-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+    -fx-background-radius: 4px;
+}
+
+.result-scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.3);
+}
+
+.result-scroll-pane .scroll-bar:vertical .increment-button,
+.result-scroll-pane .scroll-bar:vertical .decrement-button {
     -fx-background-color: transparent;
+    -fx-padding: 0;
 }
 
 /* ==================== TAGS - iOS PILL BADGES ==================== */
